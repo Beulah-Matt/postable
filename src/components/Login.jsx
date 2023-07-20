@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+
+    const navigate = useNavigate()
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -9,7 +12,7 @@ const Login = () => {
 
     const handleSignIn = async () => {
         await authenticateUser(username, password)
-        console.log("you are authenticated ");
+        navigate('/myPage')
     }
 
   return (
