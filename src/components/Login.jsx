@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
+
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const { authenticatedUser } = useContext(AuthContext)
+
+    const handleSignIn = async () => {
+        await authenticatedUser(username, password)
+        console.log("you are authenticated ");
+    }
+
   return (
     <div className="flex justify-center items-center h-screen bg-cover bg-center" style={{ backgroundImage: "url('https://tinyurl.com/23uwrvmy')" }}>
         <div class="w-full max-w-xs items-center">
@@ -14,6 +25,8 @@ const Login = () => {
                 id="username"
                 type="text"
                 placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
             />
             </div>
             <div class="mb-6">
@@ -25,13 +38,17 @@ const Login = () => {
                 id="password"
                 type="password"
                 placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
             />
+
             <p class="text-yellow-500 text-xs italic">Please Enter your password.</p>
             </div>
             <div class="flex items-center justify-between">
             <button
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="button"
+                onClick={handleSignIn}
             >
                 Sign In
             </button>
