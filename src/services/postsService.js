@@ -22,5 +22,16 @@ const postService = {
         const data = await response.json();
         return data;
       },
+
+      async getMyPosts(userId) {
+        // Simulated API call to get user-specific posts
+        const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user's posts");
+        }
+    
+        const data = await response.json();
+        return data;
+      },
 }
 export default postService
