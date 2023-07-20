@@ -6,7 +6,8 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require('@tailwindcss/line-clamp'),
+    require('@tailwindcss/line-clamp'), //trancates no of lines in a post
+    require('@tailwindcss/forms'),
   ],
 }
 
