@@ -1,8 +1,9 @@
 import React from 'react'
+import PostCard from './PostCard'
 
 const UserPage = () => {
   return (
-    <div>UserPage</div>
+    <PostCard myPosts={true} />
   )
 }
 
