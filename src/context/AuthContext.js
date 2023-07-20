@@ -39,23 +39,27 @@ const AuthProvider = ({ children }) => {
         }
       };
 
-      const followUser = (userToFollow) => {
-        setUser((prevUser)=> {
-          return {
-            ...prevUser, 
-            following: [...prevUser.following, userToFollow]
-          }
-        })
-      }
+      // const followUser = (userId) => {
+      //   setUser((prevUser) => ({
+      //     ...prevUser,
+      //     following: prevUser.following.includes(userId)
+      //       ? prevUser.following.filter((id) => id !== userId)
+      //       : [...prevUser.following, userId],
+      //   }));
+      // };
 
-      const blockUser = (userToBlock) => {
-        setUser((prevUser) => {
-          return {
-            ...prevUser, 
-            blocked: [...prevUser.blocked, userToBlock]
-          }
-        })
-      }
+      // const blockUser = (userToBlock) => {
+      //   setUser((prevUser) => {
+      //     return {
+      //       ...prevUser, 
+      //       blocked: [...prevUser.blocked, userToBlock]
+      //     }
+      //   })
+      // }
+
+      const upgradeToPremium = () => {
+        setUser((prevUser) => ({ ...prevUser, isPremium: true }));
+      };
 
       const logout = () => {
         setUser(null);
@@ -70,8 +74,9 @@ const AuthProvider = ({ children }) => {
             loading,
             authenticateUser,
             logout,
-            followUser,
-            blockUser,
+            // followUser,
+            // blockUser,
+            upgradeToPremium
         }}
         >
           {children}  

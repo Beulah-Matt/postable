@@ -12,6 +12,17 @@ const postService = {
         return user ? data : data.slice(0, 20);
     },
 
+    async getAllPosts (){
+      // Simulated API call to get posts
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      if(!response.ok){
+          throw new Error("Failed to fetch posts")
+      }
+
+      const allPostData = await response.json()
+      return allPostData
+    },
+    
     async getAuthor(userId) {
         // Simulated API call to get user based on userId
         const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
