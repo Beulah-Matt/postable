@@ -1,9 +1,18 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const NavBar = () => {
+
+  const {logout} = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const handleSignOut = () => {
+    logout()
+    navigate('/')
+  }
   
   return (
     <Disclosure as="nav" className="bg-slate-700 rounded ">
@@ -63,6 +72,7 @@ const NavBar = () => {
                           <NavLink
                             to="/"
                             className='block px-4 py-2 text-sm text-white'
+                            onClick={handleSignOut}
                           >
                             Sign out
                           </NavLink>
