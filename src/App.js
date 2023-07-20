@@ -13,8 +13,8 @@ function App() {
       <Route path="/" element={ <Root />}>
         <Route index element={<Feed />} />
         <Route path="/login" element={ <Login />} />
-        <Route path="myPage" element={ <UserPage />}/>
-        <Route path='profile' element={<Profile />} />
+        <Route path="/myPage" element={ <UserPage />}/>
+        <Route path='/profile' element={<Profile />} />
       </Route>
     )
   )

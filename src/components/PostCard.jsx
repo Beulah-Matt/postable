@@ -7,8 +7,7 @@ import userService from "../services/userService";
 const PostCard = ({ myPosts }) => {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
-  //const [signInPrompt, setSignInPrompt] = useState(false);
-
+  
   useEffect(() => {
     const fetchPosts = async () => {
       try {
