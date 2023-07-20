@@ -39,6 +39,24 @@ const AuthProvider = ({ children }) => {
         }
       };
 
+      const followUser = (userToFollow) => {
+        setUser((prevUser)=> {
+          return {
+            ...prevUser, 
+            following: [...prevUser.following, userToFollow]
+          }
+        })
+      }
+
+      const blockUser = (userToBlock) => {
+        setUser((prevUser) => {
+          return {
+            ...prevUser, 
+            blocked: [...prevUser.blocked, userToBlock]
+          }
+        })
+      }
+
       const logout = () => {
         setUser(null);
         // Remove the user from local storage upon logout
@@ -52,6 +70,8 @@ const AuthProvider = ({ children }) => {
             loading,
             authenticateUser,
             logout,
+            followUser,
+            blockUser,
         }}
         >
           {children}  
