@@ -1,4 +1,24 @@
-const PostCard = ({posts}) => {
+import { useContext, useEffect, useState } from "react"
+import { AuthContext } from "../context/AuthContext"
+import postService from "../services/postsService"
+
+const PostCard = () => {
+
+  const {user} = useContext(AuthContext)
+  const [posts, setPosts] = useState([])
+
+  useEffect(()=> {
+    const fetchPosts = async () => {
+      try {
+        const allPosts = await postService.getPosts(user)
+        setPosts(allPosts)
+      }catch(error){
+        console.error('Error fetching posts', error)
+      }
+    }
+    fetchPosts();
+  }, [user])
+
   return (
     <div>
       <div className="flow-root mt-6">
