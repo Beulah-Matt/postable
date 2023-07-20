@@ -3,6 +3,7 @@ import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromEle
 import Feed from "./components/Feed";
 import Login from "./components/Login"
 import UserPage from './components/UserPage';
+import Profile from './components/Profile';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route index element={<Feed />} />
         <Route path="/login" element={ <Login />} />
         <Route path="myPage" element={ <UserPage />}/>
+        <Route path='profile' element={<Profile />} />
       </Route>
     )
   )
