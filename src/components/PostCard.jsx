@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../context/AuthContext"
 import postService from "../services/postsService"
+import { Link, useNavigate } from "react-router-dom"
 
 const PostCard = () => {
 
   const {user} = useContext(AuthContext)
   const [posts, setPosts] = useState([])
+  const [signInPrompt, setSignInPromp] = useState(false)
 
   useEffect(()=> {
     const fetchPosts = async () => {
@@ -18,6 +20,19 @@ const PostCard = () => {
     }
     fetchPosts();
   }, [user])
+
+  const navigate = useNavigate()
+
+  const viewAllClick = () => {
+    if (!user) {
+      // Logic to handle prompt for sign-in
+      //alert("Please sign in to view all posts");
+      navigate('/login')
+    } else {
+      // Logic to navigate to all posts page when user is signed in
+      // Implement page navigation here
+    }
+  };
 
   return (
     <div>
@@ -40,12 +55,13 @@ const PostCard = () => {
         </ul>
       </div>
       <div className="mt-6">
-        <a
-          href="#"
+        {/* View All button */}
+        <button
           className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          onClick={viewAllClick}
         >
-          View all
-        </a>
+          View All
+        </button>
       </div>
     </div>
   )
