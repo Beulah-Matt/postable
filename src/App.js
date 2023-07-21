@@ -7,6 +7,7 @@ import Profile from './components/Profile';
 import AllPosts from './components/AllPosts'
 import MyPosts from './components/MyPosts';
 import Following from './components/Following';
+import PaymentForm from './components/PaymentForm';
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
         <Route path='/allPosts' element={ <AllPosts />}/>
         <Route path='/users' element={<Users />} />
         <Route path='/following' element={<Following />} />
+        <Route path="/payment" element={PaymentForm} />
+
       </Route>
     )
   )
