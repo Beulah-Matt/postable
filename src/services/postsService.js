@@ -35,14 +35,26 @@ const postService = {
       },
 
       async getMyPosts(userId) {
-        // Simulated API call to get user-specific posts
-        const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch user's posts");
+        try {
+          const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch user's posts");
+          }
+      
+          const postData = await response.json();
+      
+          // Fetch the author information for each post
+          const postsWithAuthors = await Promise.all(postData.map(async (post) => {
+            const author = await this.getAuthor(post.userId);
+            return { ...post, author }; // Include the author object in the post data
+          }));
+      
+          return postsWithAuthors;
+        } catch (error) {
+          console.error("Error fetching user's posts", error);
+          throw error;
         }
-    
-        const data = await response.json();
-        return data;
       },
+      
 }
 export default postService
