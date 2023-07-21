@@ -1,38 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom'; 
-import postService from '../services/postsService';
 
 // use this component to show the posts by a particular user when I click following 
 
-const UserPosts = ({ userId }) => {
-  const [userPosts, setUserPosts] = useState([]);
-
-  useEffect(() => {
-    // Fetch posts for the specified user (userId)
-    const fetchUserPosts = async () => {
-      try {
-        const userPostData = await postService.getMyPosts(userId);
-        setUserPosts(userPostData);
-      } catch (error) {
-        console.error(`Error fetching posts for user with ID ${userId}`, error);
-      }
-    };
-
-    fetchUserPosts();
-  }, [userId]);
-
-  // Check if userPosts is available before rendering
-  if (!userPosts) {
+const UserPosts = ({ userId, userPosts }) => {
+  if (!userPosts || userPosts.length === 0) {
     return <div>Loading...</div>;
   }
-
   return (
     <div>
-      <div className="flow-root mt-6">
-        <ul className="-my-5 divide-y divide-gray-200">
+      <div className="flow-root mt-6 ">
+        <ul className="-my-5 divide-y divide-gray-900">
           {userPosts.map((post) => (
             <li key={post.id} className="py-5">
-              <div className="relative focus-within:ring-2 focus-within:ring-indigo-500">
+              <div className="relative">
                 <h3 className="text-sm font-semibold text-blue-800">
                   <Link to="#" className="hover:underline focus:outline-none">
                     {/* Extend touch target to the entire panel */}
