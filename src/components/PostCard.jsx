@@ -5,11 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 import { AiOutlineLike } from "react-icons/ai";
 import { BiDislike } from "react-icons/bi";
+import PaymentForm from "./PaymentForm";
 
 const PostCard = ({ myPosts }) => {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -41,10 +43,28 @@ const PostCard = ({ myPosts }) => {
 
   const navigate = useNavigate();
 
+  // const viewAllClick = () => {
+  //   if (isSignedIn) {
+  //     navigate("/allPosts");
+  //   }
+  // };
+
   const viewAllClick = () => {
     if (isSignedIn) {
-      navigate("/allPosts");
+      // Check if the user is already subscribed or has made the payment before
+      const isSubscribed = false; 
+      if (isSubscribed) {
+        navigate("/allPosts"); // If the user is subscribed, navigate to the "View All" page directly
+      } else {
+        setShowPaymentForm(true); // If the user is not subscribed, show the payment form
+      }
     }
+  };
+
+  const handlePaymentSuccess = (paymentMethodId) => {
+    // Process the payment method ID if needed (e.g., send it to the server)
+    // Then navigate to the "View All" page
+    navigate("/allPosts");
   };
 
   return (
@@ -83,12 +103,15 @@ const PostCard = ({ myPosts }) => {
       </div>
       <div className="mt-6">
         {isSignedIn ? (
-          <button
-            className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            onClick={viewAllClick}
-          >
-            View All
-          </button>
+          <>
+            <button
+              className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              onClick={viewAllClick}
+            >
+              View All
+            </button>
+            {showPaymentForm && <PaymentForm onPaymentSuccess={handlePaymentSuccess} />}
+          </>
         ) : (
           <button
             className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
