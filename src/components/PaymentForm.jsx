@@ -4,17 +4,10 @@ import { useStripe, CardElement } from '@stripe/react-stripe-js';
 const PaymentForm = ({ onPaymentSuccess }) => {
   const stripe = useStripe();
   const [errorMessage, setErrorMessage] = useState('');
-  const [isCardSelected, setIsCardSelected] = useState(false);
   const cardElement = useRef(null);
 
   const handlePayment = async () => {
     if (!stripe) {
-      return;
-    }
-
-    if (!isCardSelected) {
-      // Handle the case when the user hasn't selected the card
-      setErrorMessage('Please select a card to proceed with the payment.');
       return;
     }
 
@@ -31,17 +24,13 @@ const PaymentForm = ({ onPaymentSuccess }) => {
     }
   };
 
-  const handleCardSelection = () => {
-    setIsCardSelected(!isCardSelected);
-  };
-
   return (
     <div className="max-w-md mx-auto p-4 mt-4 bg-gray-200 rounded shadow">
       <div
-        className={`mb-4 cursor-pointer ${
-          isCardSelected ? 'border-blue-500' : 'border-gray-300'
-        } border-2 rounded p-2`}
-        onClick={handleCardSelection}
+        className={`mb-4 cursor-pointer 
+           'border-blue-500' : 'border-gray-300'
+         border-2 rounded p-2`}
+        
       >
         {/* Add the CardElement to collect card details */}
         <CardElement
@@ -73,7 +62,3 @@ const PaymentForm = ({ onPaymentSuccess }) => {
 };
 
 export default PaymentForm;
-
-
-
-
