@@ -2,7 +2,7 @@ import React from 'react'
 import PostCard from './PostCard'
 import NavBar from './NavBar'
 
-const UserPage = () => {
+const MyPosts = () => {
   return (
     <>
         <NavBar />
@@ -12,4 +12,4 @@ const UserPage = () => {
   )
 }
 
-export default UserPage
+export default MyPosts

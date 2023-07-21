@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import postService from "../services/postsService";
 import userService from "../services/userService";
 import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
 
 const AllPosts = () => {
     const { user } = useContext(AuthContext);
@@ -31,7 +32,8 @@ const AllPosts = () => {
         fetchPosts();
       }, [user]);
     return (
-        <div>
+    <div>
+      <NavBar />
       <div className="flow-root mt-6">
         <ul className="-my-5 divide-y divide-gray-200">
           {posts.map((post) => (

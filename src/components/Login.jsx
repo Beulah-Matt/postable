@@ -8,38 +8,12 @@ const Login = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    // const { authenticateUser } = useContext(AuthContext)
-    const { authenticateUser, user, upgradeToPremium } = useContext(AuthContext);
-
-    // const handleSignIn = async () => {
-    //     await authenticateUser(username, password)
-    //     navigate('/myPage')
-    // }
-
+    const { authenticateUser } = useContext(AuthContext)
+    
     const handleSignIn = async () => {
-        try {
-          await authenticateUser(username, password);
-          // Check if the user is authenticated and prompt for premium membership payment
-          if (user) {
-            if (user.isPremium) {
-              alert("You are already a premium member. Enjoy unlimited access!");
-            } else {
-              const payForPremium = window.confirm(
-                "Pay for premium membership and view all posts?"
-              );
-              if (payForPremium) {
-                upgradeToPremium(); // Call the function to upgrade the user to premium
-              }
-            }
-          } else {
-            alert("Invalid username or password. Please try again.");
-          }
-          navigate("/myPage");
-        } catch (error) {
-          console.error("Error signing in:", error);
-        }
-      };
-      
+        await authenticateUser(username, password)
+        navigate('/myPage')
+    }
 
   return (
     <div className="flex justify-center items-center h-screen bg-cover bg-center" style={{ backgroundImage: "url('https://tinyurl.com/23uwrvmy')" }}>

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Feed from "./components/Feed";
 import Login from "./components/Login"
-import UserPage from './components/UserPage';
+import Users from './components/Users';
 import Profile from './components/Profile';
-
+import AllPosts from './components/AllPosts'
+import MyPosts from './components/MyPosts';
+import Following from './components/Following';
 
 function App() {
 
@@ -13,8 +15,11 @@ function App() {
       <Route path="/" element={ <Root />}>
         <Route index element={<Feed />} />
         <Route path="/login" element={ <Login />} />
-        <Route path="/myPage" element={ <UserPage />}/>
+        <Route path="/myPage" element={ <MyPosts />}/>
         <Route path='/profile' element={<Profile />} />
+        <Route path='/allPosts' element={ <AllPosts />}/>
+        <Route path='/users' element={<Users />} />
+        <Route path='/following' element={<Following />} />
       </Route>
     )
   )
