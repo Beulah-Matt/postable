@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { Feed, Login, Users, Profile, AllPosts, MyPosts, Following, PaymentForm, UserPosts } from './components/index';
 import userService from './services/userService';
 import postService from './services/postsService';
+import { AuthContext } from './context/AuthContext';
 
 function App() {
   const [allUsers, setAllUsers] = useState([]); // State to store all users
@@ -11,6 +12,7 @@ function App() {
     return savedFollowingUsers ? JSON.parse(savedFollowingUsers) : [];
   });
   const [userPosts, setUserPosts] = useState([]);
+  const {user} = useContext(AuthContext)
 
   // Function to fetch user posts for the given userId
   const fetchUserPosts = async (userId) => {
@@ -29,12 +31,13 @@ function App() {
       try {
         const users = await userService.getUsers();
         setAllUsers(users);
+        setFollowingUsers([]); // Reset followingUsers to an empty array when a new user logs in
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
     fetchUsers();
-  }, []);
+  }, [user]);
 
   //Function to handle follow/unfollow button click
   const handleFollowButtonClick = async (userId) => {
@@ -46,21 +49,17 @@ function App() {
     }
   };
   
-    // Update localStorage when followingUsers state changes
-    useEffect(() => {
+    useEffect(() => { // Update localStorage when followingUsers state changes
       localStorage.setItem('followingUsers', JSON.stringify(followingUsers));
     }, [followingUsers]);
   
-    // Fetch user posts when followingUsers state changes or when the app loads
-    useEffect(() => {
-      // Check if there are any following users
-      if (followingUsers.length > 0) {
-        // Fetch posts for each following user
+    useEffect(() => { // Fetch user posts when followingUsers state changes or when the app loads
+      if (followingUsers.length > 0 && user) {
         followingUsers.forEach((user) => {
           fetchUserPosts(user.id);
         });
       }
-    }, [followingUsers]);
+    }, [followingUsers, user]);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
