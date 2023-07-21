@@ -1,44 +1,98 @@
-import React, { useContext } from 'react';
-import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import Feed from "./components/Feed";
-import Login from "./components/Login"
-import Users from './components/Users';
-import Profile from './components/Profile';
-import AllPosts from './components/AllPosts'
-import MyPosts from './components/MyPosts';
-import Following from './components/Following';
-import PaymentForm from './components/PaymentForm';
+import React, { useState, useEffect } from 'react';
+import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { Feed, Login, Users, Profile, AllPosts, MyPosts, Following, PaymentForm, UserPosts } from './components/index';
+import userService from './services/userService';
+import postService from './services/postsService';
 
 function App() {
+  const [allUsers, setAllUsers] = useState([]); // State to store all users
+  const [followingUsers, setFollowingUsers] = useState(() => {
+    const savedFollowingUsers = localStorage.getItem('followingUsers');
+    return savedFollowingUsers ? JSON.parse(savedFollowingUsers) : [];
+  });
+  const [userPosts, setUserPosts] = useState([]);
+
+  // Function to fetch user posts for the given userId
+  const fetchUserPosts = async (userId) => {
+    try {
+      const userPostData = await postService.getMyPosts(userId);
+      console.log('User posts fetched:', userPostData);
+      setUserPosts(userPostData);
+    } catch (error) {
+      console.error(`Error fetching posts for user with ID ${userId}`, error);
+    }
+  };
+
+  // Fetch all users when the app loads
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const users = await userService.getUsers();
+        setAllUsers(users);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  //Function to handle follow/unfollow button click
+  const handleFollowButtonClick = async (userId) => {
+    const userToFollow = allUsers.find((user) => user.id === userId);
+    if (!followingUsers.find((user) => user.id === userId)) {
+      setFollowingUsers(prevFollowingUsers => [...prevFollowingUsers, userToFollow]);
+    } else {
+      setFollowingUsers(prevFollowingUsers => prevFollowingUsers.filter((user) => user.id !== userId));
+    }
+  };
+  
+    // Update localStorage when followingUsers state changes
+    useEffect(() => {
+      localStorage.setItem('followingUsers', JSON.stringify(followingUsers));
+    }, [followingUsers]);
+  
+    // Fetch user posts when followingUsers state changes or when the app loads
+    useEffect(() => {
+      // Check if there are any following users
+      if (followingUsers.length > 0) {
+        // Fetch posts for each following user
+        followingUsers.forEach((user) => {
+          fetchUserPosts(user.id);
+        });
+      }
+    }, [followingUsers]);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={ <Root />}>
+      <Route path="/" element={ <Root followingUsers={followingUsers} onFollowButtonClick={handleFollowButtonClick} />}>
         <Route index element={<Feed />} />
         <Route path="/login" element={ <Login />} />
         <Route path="/myPage" element={ <MyPosts />}/>
         <Route path='/profile' element={<Profile />} />
         <Route path='/allPosts' element={ <AllPosts />}/>
-        <Route path='/users' element={<Users />} />
-        <Route path='/following' element={<Following />} />
+        <Route path='/users' element={<Users allUsers={allUsers} followingUsers={followingUsers} handleFollowButtonClick={handleFollowButtonClick} />} />
+        <Route path='/following' element={<Following followingUsers={followingUsers} userPosts={userPosts}  />} />
         <Route path="/payment" element={PaymentForm} />
-
+        {/* Route to display individual user posts */}
+        <Route path="/users/:userId" element={<UserPosts userPosts={userPosts} />} />
       </Route>
     )
-  )
+  );
+
   return (
     <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 bg-blue-100">    
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </div>
   );
 }
 
-const Root = () => {
-  return(
+const Root = ({ allUsers, followingUsers, onFollowButtonClick }) => {
+  return (
     <div>
-      <Outlet className="flex-grow" />
+      {/* Pass the allUsers, followingUsers, and onFollowButtonClick as props to Outlet */}
+      <Outlet allUsers={allUsers} followingUsers={followingUsers} onFollowButtonClick={onFollowButtonClick} className="flex-grow" />
     </div>
-  )
+  );
 }
 
 export default App;
