@@ -55,6 +55,21 @@ const postService = {
           throw error;
         }
       },
+
+      async getCommentsForPost(postId) {
+        try {
+          const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch comments");
+          }
+    
+          const commentsData = await response.json();
+          return commentsData;
+        } catch (error) {
+          console.error("Error fetching comments", error);
+          throw error;
+        }
+      }
       
 }
 export default postService

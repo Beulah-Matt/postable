@@ -16,6 +16,8 @@ const PostCard = ({ myPosts }) => {
   const initialLikesData = JSON.parse(localStorage.getItem("postLikes")) || {};
   const [postLikes, setPostLikes] = useState(initialLikesData);
   const [likedPosts, setLikedPosts] = useState({});
+  const [postComments, setPostComments] = useState({});
+  const [showComments, setShowComments] = useState({});
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -34,6 +36,25 @@ const PostCard = ({ myPosts }) => {
           return { ...post, author };
         });
         setPosts(postsWithAuthors);
+
+        // Fetch comments for each post and store them in the state
+        const fetchCommentsForPosts = async () => {
+          const commentsPromises = postsWithAuthors.map((post) =>
+            postService.getCommentsForPost(post.id)
+          );
+          const commentsData = await Promise.all(commentsPromises);
+
+          // Create a mapping of postId to comments
+          const commentsByPostId = {};
+          commentsData.forEach((comments, index) => {
+            commentsByPostId[postsWithAuthors[index].id] = comments;
+          });
+
+          setPostComments(commentsByPostId);
+        };
+
+        fetchCommentsForPosts();
+
       } catch (error) {
         console.error("Error fetching posts", error);
       }
@@ -87,6 +108,13 @@ const PostCard = ({ myPosts }) => {
   //   console.log('dislike clicked')
   // }
 
+  const toggleComments = (postId) => {
+    setShowComments((prevVisibility) => ({
+      ...prevVisibility,
+      [postId]: !prevVisibility[postId],
+    }));
+  };
+
   return (
     <div>
       <div className="flow-root mt-6">
@@ -111,10 +139,30 @@ const PostCard = ({ myPosts }) => {
                     <AiOutlineLike className="h-5 w-5"/> <span className="">{postLikes[post.id] || 0} </span>
                   </button>
                   
-                  <button className="bg-green-300"onClick={() => console.log("Dislike button clicked")}> 
+                  <button className="h-5 w-5"onClick={() => console.log("Dislike button clicked")}> 
                     <BiDislike />
                    </button>
+                   <button
+                    className="text-sm text-blue-900 underline focus:outline-none"
+                    onClick={() => toggleComments(post.id)}
+                    >
+                      {showComments[post.id] ? "Hide Comments" : "Show Comments"}
+                   </button>
                 </div>
+              </div>
+              <div className="mt-3 border border-s-black px-4">
+                {showComments[post.id] && postComments[post.id] && (
+                  <div className=" ">
+                  <h4 className="text-sm font-semibold text-gray-900">Comments:</h4>
+                  <ul className="mt-2 space-y-4">
+                    {postComments[post.id].map((comment) => (
+                      <li key={comment.id} className="text-sm text-gray-600">
+                        <strong>{comment.name}</strong> - {comment.body}
+                      </li>
+                    ))}
+                  </ul>
+                  </div>
+                )}
               </div>
             </div>
           ))}
