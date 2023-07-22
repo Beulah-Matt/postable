@@ -13,6 +13,10 @@ const PostCard = ({ myPosts }) => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
 
+  const initialLikesData = JSON.parse(localStorage.getItem("postLikes")) || {};
+  const [postLikes, setPostLikes] = useState(initialLikesData);
+  const [likedPosts, setLikedPosts] = useState({});
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -41,18 +45,15 @@ const PostCard = ({ myPosts }) => {
     setIsSignedIn(user !== null);
   }, [user]);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    localStorage.setItem("postLikes", JSON.stringify(postLikes));
+  }, [postLikes]);
 
-  // const viewAllClick = () => {
-  //   if (isSignedIn) {
-  //     navigate("/allPosts");
-  //   }
-  // };
+  const navigate = useNavigate();
 
   const viewAllClick = () => {
     if (isSignedIn) {
-      // Check if the user is already subscribed or has made the payment before
-      const isSubscribed = false; 
+      const isSubscribed = false; // Check if the user is already subscribed or has made the payment before
       if (isSubscribed) {
         navigate("/allPosts"); // If the user is subscribed, navigate to the "View All" page directly
       } else {
@@ -67,17 +68,34 @@ const PostCard = ({ myPosts }) => {
     navigate("/allPosts");
   };
 
+  const handleLikes = (postId) => {
+    if (!likedPosts[postId]) {
+      // If the post has not been liked, update the likes count and mark the post as liked
+      setPostLikes((prevLikes) => ({
+        ...prevLikes,
+        [postId]: (prevLikes[postId] || 0) + 1,
+      }));
+      // Mark the post as liked
+      setLikedPosts((prevLikedPosts) => ({
+        ...prevLikedPosts,
+        [postId]: true,
+      }));
+    }
+  };
+  
+  // const handleDislike = () =>{
+  //   console.log('dislike clicked')
+  // }
+
   return (
     <div>
       <div className="flow-root mt-6">
-        <ul className="-my-5 divide-y divide-gray-900">
+        <div className="-my-5 divide-y divide-gray-900">
           {posts.map((post) => (
-            <li key={post.id} className="py-5">
+            <div key={post.id} className="py-5">
               <div className="relative">
                 <h3 className="text-sm font-semibold text-blue-800">
                   <Link to="#" className="hover:underline focus:outline-none">
-                    {/* Extend touch target to entire panel */}
-                    <span className="absolute inset-0" aria-hidden="true" />
                     {post.title}
                   </Link>
                 </h3>
@@ -88,18 +106,19 @@ const PostCard = ({ myPosts }) => {
                   Author: {post.author ? post.author.name : "Unknown"}
                 </p>
                 <div className="flex justify-end mx-6 gap-4">
-                  <button className="flex">
+                  <button className="flex flex-row " onClick={() => handleLikes(post.id)}>
                     {" "}
-                    <AiOutlineLike />
+                    <AiOutlineLike className="h-5 w-5"/> <span className="">{postLikes[post.id] || 0} </span>
                   </button>
-                  <span>
+                  
+                  <button className="bg-green-300"onClick={() => console.log("Dislike button clicked")}> 
                     <BiDislike />
-                  </span>
+                   </button>
                 </div>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
       <div className="mt-6">
         {isSignedIn ? (
@@ -126,3 +145,4 @@ const PostCard = ({ myPosts }) => {
 };
 
 export default PostCard;
+
