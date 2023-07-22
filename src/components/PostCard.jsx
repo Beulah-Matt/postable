@@ -4,7 +4,6 @@ import postService from "../services/postsService";
 import { Link, useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 import { AiOutlineLike } from "react-icons/ai";
-import { BiDislike } from "react-icons/bi";
 import PaymentForm from "./PaymentForm";
 
 const PostCard = ({ myPosts }) => {
@@ -104,10 +103,6 @@ const PostCard = ({ myPosts }) => {
     }
   };
   
-  // const handleDislike = () =>{
-  //   console.log('dislike clicked')
-  // }
-
   const toggleComments = (postId) => {
     setShowComments((prevVisibility) => ({
       ...prevVisibility,
@@ -138,10 +133,7 @@ const PostCard = ({ myPosts }) => {
                     {" "}
                     <AiOutlineLike className="h-5 w-5"/> <span className="">{postLikes[post.id] || 0} </span>
                   </button>
-                  
-                  <button className="h-5 w-5"onClick={() => console.log("Dislike button clicked")}> 
-                    <BiDislike />
-                   </button>
+    
                    <button
                     className="text-sm text-blue-900 underline focus:outline-none"
                     onClick={() => toggleComments(post.id)}
