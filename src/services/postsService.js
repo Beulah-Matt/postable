@@ -69,7 +69,22 @@ const postService = {
           console.error("Error fetching comments", error);
           throw error;
         }
-      }
+      },
+
+      async addPost(formData) {
+        // Simulated API call to add a post
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        console.log(formData)
+        if (!response.ok) {
+          throw new Error('Failed to add post');
+        }
+      },
       
 }
 export default postService

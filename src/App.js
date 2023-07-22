@@ -5,6 +5,7 @@ import userService from './services/userService';
 import postService from './services/postsService';
 import { AuthContext } from './context/AuthContext';
 
+
 function App() {
   const [allUsers, setAllUsers] = useState([]); // State to store all users
   const [followingUsers, setFollowingUsers] = useState(() => {
@@ -66,7 +67,7 @@ function App() {
       <Route path="/" element={ <Root followingUsers={followingUsers} onFollowButtonClick={handleFollowButtonClick} />}>
         <Route index element={<Feed />} />
         <Route path="/login" element={ <Login />} />
-        <Route path="/myPage" element={ <MyPosts />}/>
+        <Route path="/myPage" element={ <MyPosts user={user}/>}/>
         <Route path='/profile' element={<Profile />} />
         <Route path='/allPosts' element={ <AllPosts />}/>
         <Route path='/users' element={<Users allUsers={allUsers} followingUsers={followingUsers} handleFollowButtonClick={handleFollowButtonClick} />} />
