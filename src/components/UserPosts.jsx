@@ -15,11 +15,7 @@ const UserPosts = ({ userId, userPosts }) => {
             <li key={post.id} className="py-5">
               <div className="relative">
                 <h3 className="text-sm font-semibold text-blue-800">
-                  <Link to="#" className="hover:underline focus:outline-none">
-                    {/* Extend touch target to the entire panel */}
-                    <span className="absolute inset-0" aria-hidden="true" />
                     {post.title}
-                  </Link>
                 </h3>
                 <p className="mt-1 text-sm text-gray-600 line-clamp-2">{post.body}</p>
                 <p className="mt-1 text-sm text-gray-600">

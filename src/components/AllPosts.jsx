@@ -103,9 +103,7 @@ const AllPosts = () => {
             <div key={post.id} className="py-5">
               <div className="relative ">
                 <h3 className="text-sm font-semibold text-blue-800">
-                  <Link to="#" className="hover:underline focus:outline-none">
                     {post.title}
-                  </Link>
                 </h3>
                 <p className="mt-1 text-sm text-gray-600 line-clamp-2">{post.body}</p>
                 <p className="mt-1 text-sm text-gray-600">
