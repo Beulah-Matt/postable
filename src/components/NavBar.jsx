@@ -15,9 +15,10 @@ const NavBar = () => {
   }
 
   const navigation = [
-    { name: 'All Posts', href: '/allPosts', current: false },
+    { name: 'All Posts', href: '/allPosts', current: true },
     { name: 'Following', href: '/following', current: false },
-    { name: 'Users', href: '/users', current: false}
+    { name: 'Users', href: '/users', current: false},
+    {name: "My Posts", href:'/myPage', current: false}
   ]
   
   function classNames(...classes) {
@@ -68,7 +69,7 @@ const NavBar = () => {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://tinyurl.com/busddrk7"
+                        src="https://cdn-icons-png.flaticon.com/512/172/172163.png?w=740&t=st=1690106775~exp=1690107375~hmac=544d6067455336ff8b40551d05e8a651951a6a14556053aff32c020a26706d57"
                         alt=""
                       />
                     </Menu.Button>
