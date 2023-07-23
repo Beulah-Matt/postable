@@ -5,6 +5,7 @@ import userService from './services/userService';
 import postService from './services/postsService';
 import { AuthContext } from './context/AuthContext';
 
+import ErrorComponent from './components/ErrorComponent';
 
 function App() {
   const [allUsers, setAllUsers] = useState([]); // State to store all users
@@ -85,14 +86,24 @@ function App() {
       <Route path="/" element={ <Root followingUsers={followingUsers} onFollowButtonClick={handleFollowButtonClick} />}>
         <Route index element={<Feed />} />
         <Route path="/login" element={ <Login />} />
-        <Route path="/myPage" element={ <MyPosts user={user}/>}/>
-        <Route path='/profile' element={<Profile followingUsers={followingUsers}/>} />
-        <Route path='/allPosts' element={ <AllPosts />}/>
-        <Route path='/users' element={<Users allUsers={allUsers} followingUsers={followingUsers} handleFollowButtonClick={handleFollowButtonClick} />} />
-        <Route path='/following' element={<Following followingUsers={followingUsers} userPosts={userPosts}  />} />
-        <Route path="/payment" element={PaymentForm} />
-        {/* Route to display individual user posts */}
-        <Route path="/users/:userId" element={<UserPosts userPosts={userPosts} />} />
+        {user ? ( // Check if the user is authenticated
+          <>
+            <Route path="/myPage" element={<MyPosts user={user} />} />
+            <Route path="/profile" element={<Profile followingUsers={followingUsers} />} />
+            <Route path="/allPosts" element={<AllPosts />} />
+            <Route
+              path="/users"
+              element={<Users allUsers={allUsers} followingUsers={followingUsers} handleFollowButtonClick={handleFollowButtonClick} />}
+            />
+            <Route path="/following" element={<Following followingUsers={followingUsers} userPosts={userPosts} />} />
+            <Route path="/payment" element={<PaymentForm />} />
+            <Route path="/users/:userId" element={<UserPosts userPosts={userPosts} />} />
+          </>
+        ) : (
+          // Render the error page if the user is not authenticated
+          <Route path="*" element={<ErrorComponent />} />
+        )}
+        
       </Route>
     )
   );

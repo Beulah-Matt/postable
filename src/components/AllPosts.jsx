@@ -15,7 +15,6 @@ const AllPosts = () => {
   const initialLikesData = JSON.parse(localStorage.getItem("postLikes")) || {};
   const [postLikes, setPostLikes] = useState(initialLikesData);
   const [likedPosts, setLikedPosts] = useState({});
-  const [dislikedPosts, setDislikedPosts] = useState({});
     
     useEffect(() => {
         const fetchPosts = async () => {
@@ -79,7 +78,6 @@ const AllPosts = () => {
       };
       
       const handleDislike = (postId) => {
-        console.log("dislike clicked")
         // Filter out the disliked post and update the posts state
         setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
         // Mark the post as disliked

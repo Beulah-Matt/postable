@@ -1,8 +1,7 @@
 import NavBar from './NavBar';
 
 const AllUsers = ({ allUsers, followingUsers, handleFollowButtonClick }) => {
-  console.log("Loggin all users from Users.jsx, ", allUsers)
-
+ 
   return (
     <div className="border">
     <NavBar />

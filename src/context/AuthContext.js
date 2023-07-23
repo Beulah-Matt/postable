@@ -67,7 +67,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    console.log(user, user.isPremium)
     setUser(null);
     // Remove the user and premium status from local storage upon logout
     localStorage.removeItem("user");

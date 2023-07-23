@@ -3,7 +3,6 @@ import NavBar from "./NavBar";
 import UserPosts from "./UserPosts";
 
 const Following = ({ followingUsers, userPosts }) => {
-  console.log("These users are in the following component", followingUsers);
   return (
     <div>
       <NavBar />
