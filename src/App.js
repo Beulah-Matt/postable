@@ -19,7 +19,6 @@ function App() {
   const fetchUserPosts = async (userId) => {
     try {
       const userPostData = await postService.getMyPosts(userId);
-      console.log('User posts fetched:', userPostData);
       setUserPosts(userPostData);
     } catch (error) {
       console.error(`Error fetching posts for user with ID ${userId}`, error);
@@ -68,7 +67,7 @@ function App() {
         <Route index element={<Feed />} />
         <Route path="/login" element={ <Login />} />
         <Route path="/myPage" element={ <MyPosts user={user}/>}/>
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile' element={<Profile followingUsers={followingUsers}/>} />
         <Route path='/allPosts' element={ <AllPosts />}/>
         <Route path='/users' element={<Users allUsers={allUsers} followingUsers={followingUsers} handleFollowButtonClick={handleFollowButtonClick} />} />
         <Route path='/following' element={<Following followingUsers={followingUsers} userPosts={userPosts}  />} />
