@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import postService from "../services/postsService";
 import { useNavigate } from "react-router-dom";
-import NavBar from "./NavBar";
 
 
-const Profile = ({followingUsers}) => {
+const Profile = () => {
 
   const {user} =  useContext(AuthContext)
   const [userPosts, setUserPosts] = useState([])
@@ -24,9 +23,7 @@ const Profile = ({followingUsers}) => {
   },[user])
 
   return (
-    <>
-    <NavBar/>
-    <div className="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 mt-3">
+    <div className="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
       <div className="border-b-2 font-medium border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
       Hello, {user && user.name}
       </div>
@@ -36,8 +33,8 @@ const Profile = ({followingUsers}) => {
         </h5>
       </div>
       <div className="border-b-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
-        <p className="mb-4 text-base text-neutral-800 dark:text-neutral-200">
-          Following: {followingUsers.length}
+        <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+          Following
         </p>
       </div>
       <div className="border-b-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
@@ -47,12 +44,11 @@ const Profile = ({followingUsers}) => {
           data-te-ripple-init
           data-te-ripple-color="light"
           onClick={() => navigate("/allPosts")}
-          >
+        >
           All Posts
         </button>
       </div>   
     </div>
-    </>
   );
 };
 
