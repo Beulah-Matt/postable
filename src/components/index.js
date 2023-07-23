@@ -1,7 +1,7 @@
 // index.js
 import Feed from "./Feed"
 import Login from "./Login";
-import Users from './Users';
+import Users from './AllUsers';
 import Profile from './Profile';
 import AllPosts from './AllPosts';
 import MyPosts from './MyPosts';

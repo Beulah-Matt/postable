@@ -27,17 +27,36 @@ function App() {
 
   // Fetch all users when the app loads
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsersAndProfileImages = async () => {
       try {
         const users = await userService.getUsers();
-        setAllUsers(users);
-        setFollowingUsers([]); // Reset followingUsers to an empty array when a new user logs in
+
+        // Fetch profile images for all users
+        const usersWithImages = await Promise.all(
+          users.map(async (user) => {
+            const profileImage = await fetchRandomProfileImage();
+            return {
+              ...user,
+              profileImage,
+            };
+          })
+        );
+
+        setAllUsers(usersWithImages);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching users and profile images:', error);
       }
     };
-    fetchUsers();
-  }, [user]);
+
+    fetchUsersAndProfileImages();
+  }, []);
+
+  const fetchRandomProfileImage = async () => {
+    // Fetch a single random profile image
+    const response = await fetch('https://randomuser.me/api/');
+    const data = await response.json();
+    return data.results[0].picture.large;
+  };
 
   //Function to handle follow/unfollow button click
   const handleFollowButtonClick = async (userId) => {
